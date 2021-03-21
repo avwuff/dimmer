@@ -49,7 +49,7 @@ namespace dimmer {
         }
 
         std::wstring getId() const {
-            return std::wstring(this->info.szDevice) + L"-" + std::to_wstring(index);
+            return std::wstring(this->info.szDevice) + L"-" + std::to_wstring(this->info.rcMonitor.right - this->info.rcMonitor.left) + L"x" + std::to_wstring(this->info.rcMonitor.bottom - this->info.rcMonitor.top); //  + L"-" + std::to_wstring(index);
         }
 
         std::wstring getName() const {

@@ -40,7 +40,7 @@
 using namespace dimmer;
 using namespace nlohmann;
 
-constexpr float DEFAULT_OPACITY = 0.3f;
+constexpr float DEFAULT_OPACITY = 0.0f;
 constexpr int DEFAULT_TEMPERATURE = -1;
 
 struct MonitorOptions {

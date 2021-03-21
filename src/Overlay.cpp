@@ -202,7 +202,7 @@ void Overlay::updateBrightnessOverlay() {
 
         float value = getMonitorOpacity(this->monitor);
         value = std::min(1.0f, std::max(0.0f, value));
-        BYTE opacity = std::min((BYTE)240, (BYTE)(value * 255.0f));
+        BYTE opacity = std::min((BYTE)250, (BYTE)(value * 255.0f));
 
         SetLayeredWindowAttributes(this->hwnd, 0, opacity, LWA_ALPHA);
         SetWindowPos(this->hwnd, HWND_TOPMOST, x, y, width, height, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
