@@ -92,6 +92,44 @@ namespace dimmer {
             &MonitorEnumProc,
             reinterpret_cast<LPARAM>(&result));
 
+        // Also look through the display devices list
+        DISPLAY_DEVICE dispDevice;
+        ZeroMemory(&dispDevice, sizeof(dispDevice));
+        dispDevice.cb = sizeof(dispDevice);
+
+        DWORD screenID = 0;
+        while (EnumDisplayDevices(NULL, screenID, &dispDevice, 0))
+        {
+            // important: make copy of DeviceName
+            WCHAR name[sizeof(dispDevice.DeviceName)];
+            wcscpy(name, dispDevice.DeviceName);
+
+            if (EnumDisplayDevices(name, 0, &dispDevice, EDD_GET_DEVICE_INTERFACE_NAME))
+            {
+
+
+                // at this point dispDevice.DeviceID contains a unique identifier for the monitor
+                // find this monitor in our Monitor map and set it in there.
+                for (int i = 0; i < result.size(); i++) {
+
+                    WCHAR newname[sizeof(dispDevice.DeviceName)];
+                    wcscpy(newname, dispDevice.DeviceName);
+
+                    // The dispDevice.DeviceName contains more information than the s ystem info.szDevice, so we want to truncate.
+                    // Truncate:
+                    if (wcslen(newname) > wcslen(result[i].info.szDevice)) {
+                        newname[wcslen(result[i].info.szDevice)] = 0x00;
+                    }
+
+                    if (wcscmp(result[i].info.szDevice, newname) == 0) {
+                        result[i].setId(dispDevice.DeviceID);
+                    }
+                }
+            }
+
+            ++screenID;
+        }
+
         return result;
     }
 

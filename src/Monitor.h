@@ -49,7 +49,8 @@ namespace dimmer {
         }
 
         std::wstring getId() const {
-            return std::wstring(this->info.szDevice) + L"-" + std::to_wstring(this->info.rcMonitor.right - this->info.rcMonitor.left) + L"x" + std::to_wstring(this->info.rcMonitor.bottom - this->info.rcMonitor.top); //  + L"-" + std::to_wstring(index);
+            //return std::wstring(this->info.szDevice) + L"-" + std::to_wstring(this->info.rcMonitor.right - this->info.rcMonitor.left) + L"x" + std::to_wstring(this->info.rcMonitor.bottom - this->info.rcMonitor.top); //  + L"-" + std::to_wstring(index);
+            return this->NewDeviceID;
         }
 
         std::wstring getName() const {
@@ -61,13 +62,19 @@ namespace dimmer {
             
             // Include the monitor size in the name
             name = name + L" " + std::to_wstring(this->info.rcMonitor.right - this->info.rcMonitor.left) + L"x" + std::to_wstring(this->info.rcMonitor.bottom - this->info.rcMonitor.top);
-
             return name;
+        }
+
+        void setId(WCHAR id[128]) {
+            this->NewDeviceID = std::wstring(id);
         }
 
         int index;
         HMONITOR handle;
         MONITORINFOEX info;
+
+        // What should hopefully be a unique ID that persists for this monitor!
+        std::wstring NewDeviceID;
     };
 
     extern std::vector<Monitor> queryMonitors();
